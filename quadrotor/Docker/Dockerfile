@@ -1,0 +1,14 @@
+FROM ubuntu:focal
+RUN apt-get update &&  apt-get install -y tzdata gnupg2 zsh gawk
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu focal  main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN apt update
+RUN apt install -y  ros-noetic-ros-base
+RUN apt install -y locales
+RUN rm -rf /usr/bin/awk && ln -s gawk /usr/bin/awk 
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
