@@ -13,4 +13,5 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 COPY ros-entrypoint.sh /usr/bin
 RUN chmod a+x /usr/bin/ros-entrypoint.sh
+#RUN echo "test\ntest" | passwd root
 ENTRYPOINT ["/usr/bin/ros-entrypoint.sh"]

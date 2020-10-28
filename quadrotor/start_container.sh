@@ -1,20 +1,27 @@
-IMG_NAME=ros:base
+IMG_NAME=ros:simulation
 CONTAINER_NAME=robotics_sandbox
 
 if [[ -z $(docker ps --filter "name=$CONTAINER_NAME" | grep $CONTAINER_NAME) ]]
 then
 
-	ARGS=(" -ti
+	ARGS=(" -tid
 		--rm
-		--user $UID:$GID
 		-v /etc/passwd:/etc/passwd
-		-e TERM=$TERM
+		-v /etc/sudoers:/etc/sudoers:ro
+		-v /etc/group:/etc/group:ro
+		-v /etc/shadow:/etc/shadow:ro
 		--name $CONTAINER_NAME
 		--mount type=bind,source=/home,target=/home")
 
 
 	echo "Starting new docker container"
-	docker run $ARGS $IMG_NAME $SHELL 
+	docker run $ARGS $IMG_NAME /usr/bin/ros-entrypoint.sh  $SHELL 
+else
+	echo "Docker container already running"
 fi
 
-	docker exec -ti $CONTAINER_NAME /usr/bin/ros-entrypoint.sh $SHELL
+	ARGS=(" -ti
+		--user $UID:$GID
+		-e TERM=$TERM")
+# usermod -aG $USER sudo?
+	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh   $SHELL 
