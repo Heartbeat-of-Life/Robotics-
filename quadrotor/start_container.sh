@@ -1,5 +1,6 @@
 IMG_NAME=ros:simulation
 CONTAINER_NAME=robotics_sandbox
+GAZEBO_PLUGIN_PATH=gazebo/plugins/plugin_tutorial/build
 
 
 if [[ -z $(docker ps --filter "name=$CONTAINER_NAME" | grep $CONTAINER_NAME) ]]
@@ -21,6 +22,7 @@ then
 		-e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
 		-e TERM=$TERM
 		-e DISPLAY=unix$DISPLAY
+		-e GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH
 		--mount type=bind,source=/home,target=/home")
 
 	echo "Starting new docker container"
@@ -32,7 +34,8 @@ ARGS=(" -ti
 	-w $(pwd)
 	-e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
 	-e TERM=$TERM
-	-e DISPLAY=unix$DISPLAY")
-	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh  $SHELL 
+	-e DISPLAY=unix$DISPLAY
+	-e GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH")
+	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh  $SHELL
 fi
 

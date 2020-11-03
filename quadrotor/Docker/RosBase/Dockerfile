@@ -1,5 +1,5 @@
 FROM ubuntu:focal
-RUN apt-get update &&  apt-get install -y tzdata gnupg2 zsh gawk vim mesa-utils
+RUN apt-get update &&  apt-get install -y tzdata gnupg2 zsh gawk vim mesa-utils 
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu focal  main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 RUN apt update
@@ -14,4 +14,5 @@ ENV LC_ALL en_US.UTF-8
 COPY ros-entrypoint.sh /usr/bin
 RUN chmod a+x /usr/bin/ros-entrypoint.sh
 #RUN echo "test\ntest" | passwd root
+RUN apt-get install -y git
 ENTRYPOINT ["/usr/bin/ros-entrypoint.sh"]
