@@ -1,7 +1,9 @@
-IMG_NAME=ros:simulation
+IMG_NAME=ros:base
 CONTAINER_NAME=robotics_sandbox
-GAZEBO_PLUGIN_PATH=gazebo/plugins/plugin_tutorial/build
-
+export GAZEBO_PLUGIN_PATH=$(pwd)/gazebo/plugins/plugin_tutorial/build
+export GAZEBO_MODEL_PATH=$(pwd)/gazebo/models
+#export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/models/plugin_tutorial
+export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/plugins/velodyne_plugin
 
 if [[ -z $(docker ps --filter "name=$CONTAINER_NAME" | grep $CONTAINER_NAME) ]]
 then
@@ -23,6 +25,8 @@ then
 		-e TERM=$TERM
 		-e DISPLAY=unix$DISPLAY
 		-e GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH
+		-e GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH
+		-e GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH
 		--mount type=bind,source=/home,target=/home")
 
 	echo "Starting new docker container"

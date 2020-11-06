@@ -1,1 +1,1 @@
-docker build -t ros:base .
+docker build -t ros2:base .

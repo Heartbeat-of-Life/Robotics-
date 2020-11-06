@@ -1,4 +1,5 @@
 FROM ros:base
-RUN DEBIAN_FRONTEND=noninteractive apt-get update  
-RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-desktop-full freecad netgen
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ros-foxy-desktop freecad netgen blender python3-collada
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen
+
