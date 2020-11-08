@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-#source /opt/ros/ros2_foxy/setup.sh
+source /opt/ros/foxy/setup.sh
 exec "$@"

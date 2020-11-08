@@ -1,1 +1,1 @@
-docker build -t ros:simulation .
+docker build -t ros2:simulation .

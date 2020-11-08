@@ -1,4 +1,4 @@
-IMG_NAME=ros:base
+IMG_NAME=ros2:simulation
 CONTAINER_NAME=robotics_sandbox
 export GAZEBO_PLUGIN_PATH=$(pwd)/gazebo/plugins/plugin_tutorial/build
 export GAZEBO_MODEL_PATH=$(pwd)/gazebo/models
