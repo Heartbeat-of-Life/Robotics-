@@ -1,8 +1,7 @@
-IMG_NAME=ros2:simulation
+IMG_NAME=ros2:base
 CONTAINER_NAME=robotics_sandbox
 export GAZEBO_PLUGIN_PATH=$(pwd)/gazebo/plugins/plugin_tutorial/build
 export GAZEBO_MODEL_PATH=$(pwd)/gazebo/models
-#export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/models/plugin_tutorial
 export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/plugins/velodyne_plugin
 
 if [[ -z $(docker ps --filter "name=$CONTAINER_NAME" | grep $CONTAINER_NAME) ]]
@@ -30,7 +29,7 @@ then
 		--mount type=bind,source=/home,target=/home")
 
 	echo "Starting new docker container"
-	docker run --rm  $ARGS $IMG_NAME /usr/bin/ros-entrypoint.sh    $SHELL
+	docker run --rm  $ARGS $IMG_NAME $SHELL 
 else
 	echo "Docker container already running. I will attach to running container"
 ARGS=(" -ti
@@ -40,6 +39,6 @@ ARGS=(" -ti
 	-e TERM=$TERM
 	-e DISPLAY=unix$DISPLAY
 	-e GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH")
-	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh  $SHELL
+	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh  $SHELL -c 'source ~/Downloads/test.sh'
 fi
 
