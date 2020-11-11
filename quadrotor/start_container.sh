@@ -1,8 +1,8 @@
-IMG_NAME=ros2:base
+IMG_NAME=ros2:simulation
 CONTAINER_NAME=robotics_sandbox
-export GAZEBO_PLUGIN_PATH=$(pwd)/gazebo/plugins/plugin_tutorial/build
-export GAZEBO_MODEL_PATH=$(pwd)/gazebo/models
-export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/plugins/velodyne_plugin
+#export GAZEBO_PLUGIN_PATH=$(pwd)/gazebo/plugins/plugin_tutorial/build
+#export GAZEBO_MODEL_PATH=$(pwd)/gazebo/models
+#export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/plugins/velodyne_plugin
 
 if [[ -z $(docker ps --filter "name=$CONTAINER_NAME" | grep $CONTAINER_NAME) ]]
 then
@@ -39,6 +39,7 @@ ARGS=(" -ti
 	-e TERM=$TERM
 	-e DISPLAY=unix$DISPLAY
 	-e GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH")
-	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh  $SHELL -c 'source ~/Downloads/test.sh'
+	docker exec $ARGS $CONTAINER_NAME /usr/bin/ros-entrypoint.sh  $SHELL 
+
 fi
 
