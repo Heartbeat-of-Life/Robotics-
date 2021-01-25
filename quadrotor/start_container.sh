@@ -1,5 +1,13 @@
 IMG_NAME=ros2:simulation
 CONTAINER_NAME=robotics_sandbox
+
+
+
+export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(pwd)/gazebo/models
+#export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:$(pwd)/gazebo/models/Pendulum
+
+
 #export GAZEBO_PLUGIN_PATH=$(pwd)/gazebo/plugins/plugin_tutorial/build
 #export GAZEBO_MODEL_PATH=$(pwd)/gazebo/models
 #export GAZEBO_RESOURCE_PATH=$(pwd)/gazebo/plugins/velodyne_plugin
