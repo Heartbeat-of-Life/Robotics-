@@ -112,7 +112,7 @@
       <kinematic>0</kinematic>
       <gravity>1</gravity>
       <visual name='visual'>
-        <pose>0 0 -0.5 0 -0 0</pose>
+        <pose>0 0 0.5 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.1 0.1 1</size>
@@ -138,7 +138,7 @@
       <collision name='collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose>0 0 -0.5 0 -0 0</pose>
+        <pose>0 0 0.5 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.1 0.1 0.5</size>
@@ -296,7 +296,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0 0 0.05 0 -0 0</pose>
+      <pose>-0 0 0.05 0 -0 0</pose>
       <gravity>1</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -396,7 +396,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0 3 0.05 0 -0 0</pose>
+      <pose>-0 3 0.05 0 -0 0</pose>
       <gravity>1</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>

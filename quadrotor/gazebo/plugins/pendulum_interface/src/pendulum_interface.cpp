@@ -1,11 +1,15 @@
 #ifndef _PENDULUM_PLUGIN_HH_
 #define _PENDULUM_PLUGIN_HH_
 
+#include "gazebo/physics/Joint.hh"
+#include "gazebo/physics/JointState.hh"
+#include "ignition/math/Angle.hh"
 #include "rclcpp/rclcpp.hpp"
 #include <std_msgs/msg/float64.hpp>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/msgs/msgs.hh>
+#include <ignition/math.hh>
 #include<std_msgs/msg/float32.hpp>
 #include<messages/srv/pendulum_sensor_info.hpp>
 #include<thread>
@@ -26,7 +30,7 @@ namespace gazebo
 			const  ignition::math::v6::Pose3<double>pose = this->wagon->WorldPose();
 			res->x=this->wagon->WorldPose().Pos().Y();
 			res->dx=this->wagon->WorldLinearVel().Y();
-			res->phi = this->pendulum_joint->Position();
+			res->phi = this->model->GetLink("pendulum_stick")->WorldPose().Rot().Roll();
 			res->dphi= this->pendulum_joint->GetVelocity(0);
 			return;
 
@@ -48,7 +52,7 @@ namespace gazebo
 		this->model=_model;
 		this->wagon = model->GetLink("pendulum_wagon");
 		this->pendulum_joint = model->GetJoint("pendulum_to_wagon");
-		this->wagon_rail_joint = model->GetJoint("table_plate_to_wagon");
+//		this->wagon_rail_joint = model->GetJoint("table_plate_to_wagon");
 		this->update_connection=event::Events::ConnectWorldUpdateBegin(std::bind(&PendulumSensor::onUpdate,this));
 		if(!rclcpp::ok())
 		{
