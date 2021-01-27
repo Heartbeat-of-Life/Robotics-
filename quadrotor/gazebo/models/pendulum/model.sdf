@@ -14,7 +14,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0 0 1 0 -0 0</pose>
+      <pose>-0 0 1 0 -0 0</pose>
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
@@ -104,7 +104,7 @@
           <iyz>0</iyz>
           <izz>0.166667</izz>
         </inertia>
-        <pose>0 0 -0.5 0 -0 0</pose>
+        <pose>0 0 0.5 0 -0 0</pose>
       </inertial>
       <pose>0.1 1 1.65 0 -0 0</pose>
       <self_collide>1</self_collide>
@@ -138,7 +138,7 @@
       <collision name='collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose>0 0 0.5 0 -0 0</pose>
+        <pose>0 0 -0.5 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.1 0.1 0.5</size>
@@ -396,7 +396,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>-0 3 0.05 0 -0 0</pose>
+      <pose>0 3 0.05 0 -0 0</pose>
       <gravity>1</gravity>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -588,7 +588,7 @@
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
-      <pose>0 1.5 1.5 0 -0 0</pose>
+      <pose>-0 1.5 1.5 0 -0 0</pose>
       <self_collide>1</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
@@ -787,10 +787,10 @@
       <child>pendulum_wagon</child>
       <pose>0 0 0 0 -0 0</pose>
       <axis>
-        <xyz>0 1 0</xyz>
+        <xyz expressed_in='__model__'>0 1 0</xyz>
         <limit>
-          <lower>-1.79769e+308</lower>
-          <upper>1.79769e+308</upper>
+          <lower>-1</lower>
+          <upper>1</upper>
           <effort>-1</effort>
           <velocity>-1</velocity>
         </limit>

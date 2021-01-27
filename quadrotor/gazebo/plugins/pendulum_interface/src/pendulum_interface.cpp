@@ -28,8 +28,10 @@ namespace gazebo
 		{ 
 			res->t = clock.now().seconds();   
 			const  ignition::math::v6::Pose3<double>pose = this->wagon->WorldPose();
-			res->x=this->wagon->WorldPose().Pos().Y();
-			res->dx=this->wagon->WorldLinearVel().Y();
+//			res->x=this->wagon->WorldPose().Pos().Y();
+			res->x =this->wagon_rail_joint->Position();
+			res->dx=this->wagon_rail_joint->GetVelocity(0);
+			std::cout <<"positon wagon="<<res->x<<" v="<< res->dx<<" v2="<<this->wagon_rail_joint->GetVelocity(0) <<" limit="<<this->wagon_rail_joint->LowerLimit()<<" "<<this->wagon_rail_joint->UpperLimit()<<std::endl;
 			res->phi = this->model->GetLink("pendulum_stick")->WorldPose().Rot().Roll();
 			res->dphi= this->pendulum_joint->GetVelocity(0);
 			return;
@@ -52,7 +54,7 @@ namespace gazebo
 		this->model=_model;
 		this->wagon = model->GetLink("pendulum_wagon");
 		this->pendulum_joint = model->GetJoint("pendulum_to_wagon");
-//		this->wagon_rail_joint = model->GetJoint("table_plate_to_wagon");
+		this->wagon_rail_joint = model->GetJoint("table_plate_to_wagon");
 		this->update_connection=event::Events::ConnectWorldUpdateBegin(std::bind(&PendulumSensor::onUpdate,this));
 		if(!rclcpp::ok())
 		{

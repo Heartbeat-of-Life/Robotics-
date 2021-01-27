@@ -3,3 +3,4 @@ install
 log
 devel
 .catkin_workspace
+*.swp
