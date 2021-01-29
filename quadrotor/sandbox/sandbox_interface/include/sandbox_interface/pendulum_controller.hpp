@@ -41,7 +41,8 @@ class PendulumControllerOPLin : public PendulumControllerBase<T>
 	T compute_controls() const override
 	{
 //		T u{1};
-		T u = std::sin(10*this->state(0))*10;
+		std::cout<<"x="<<this->state(0)<<" dx="<<this->state(1)<<" phi="<<this->state(2)<<" dphi="<<this->state(3)<<std::endl;
+		T u = std::sin(10*this->state(0))*0;
 		return u;
 	}
 };

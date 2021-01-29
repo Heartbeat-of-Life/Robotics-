@@ -28,7 +28,7 @@ namespace sbx
 		    using SharedFuture = std::shared_future<SharedResponse>;
 		    auto callback = [this](SharedFuture ptr){
 			    PendulumControllerBase<double>::state_type state;
-			    state(0)=ptr.get()->t;
+			    state(0)=ptr.get()->x;
 			    state(1)=ptr.get()->dx;
 			    state(2)=ptr.get()->phi;
 			    state(3)=ptr.get()->dphi;
