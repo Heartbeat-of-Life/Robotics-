@@ -1,4 +1,4 @@
-#include "messages/srv/detail/pendulum_sensor_info__struct.hpp"
+//#include "messages/srv/detail/pendulum_sensor_info__struct.hpp"
 #include "rclcpp/clock.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sandbox_interface/sandbox_interface.hpp"
@@ -14,6 +14,11 @@ namespace sbx
 		publisher = this->create_publisher<std_msgs::msg::Float64>("control_force",10);
 		PendulumParams<double> params;
 		this->ptr_controller = std::make_unique<PendulumControllerOPLin<double>>(params);
+		// set params
+		this->ptr_controller->set_wagon_mass(1+1);
+		this->ptr_controller->set_pendulum_head_mass(1);
+		this->ptr_controller->set_limits(0.2,2.8);
+
 	}
 
 	void PendulumController:: compute_controls()

@@ -51,15 +51,21 @@ namespace gazebo
 	{
 		this->model=_model;
 		this->wagon = model->GetLink("pendulum_wagon");
+		this->pendulum_head = model->GetLink("pendulum_head");
+		this->wagon_stick_joint = model->GetLink("joint_wagon_stick");
 		this->pendulum_joint = model->GetJoint("wagon_to_joint");
 		this->wagon_rail_joint = model->GetJoint("table_plate_to_wagon");
 		this->update_connection=event::Events::ConnectWorldUpdateBegin(std::bind(&PendulumSensor::onUpdate,this));
-		this->mass = this->wagon->GetInertial()->Mass();
-		this->wagon_length = this->wagon->BoundingBox().YLength();
-		physics::LinkPtr left_leg = this->model->GetLink("table_leg_left");
-		physics::LinkPtr table_plate = this->model->GetLink("table_plate");
-		const double xmin = left_leg->BoundingBox().YLength()/2+this->wagon_length/2;
-		const double xmax = table_plate->BoundingBox().YLength()-xmin;
+		// Set wagon mass
+//		double mass = this->wagon->GetInertial()->Mass();
+//		mass += this->wagon_stick_joint->GetInertial()->Mass();
+
+//		mass += this->pendulum_head->GetInertial()->Mass();
+//		const double wagon_length = this->wagon->BoundingBox().YLength();
+//		physics::LinkPtr left_leg = this->model->GetLink("table_leg_left");
+//		physics::LinkPtr table_plate = this->model->GetLink("table_plate");
+//		const double xmin = left_leg->BoundingBox().YLength()/2+wagon_length/2;
+//		const double xmax = table_plate->BoundingBox().YLength()-xmin;
 		if(!rclcpp::ok())
 		{
 			rclcpp::init(0,nullptr);
@@ -80,6 +86,8 @@ namespace gazebo
 	private: rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr sub;
 	private: physics::ModelPtr model;
 	private: physics::LinkPtr wagon;
+	private: physics::LinkPtr wagon_stick_joint;
+	private: physics::LinkPtr pendulum_head;
 	private: physics::JointPtr pendulum_joint;
 	private: physics::JointPtr wagon_rail_joint;
 	private: rclcpp::Node::SharedPtr node_ptr;
@@ -88,8 +96,8 @@ namespace gazebo
 	private: rclcpp::Clock clock;
 	private: event::ConnectionPtr update_connection;
 	private: double current_force;
-	private: double mass;
-	private: double wagon_length;
+//	private: double mass;
+//	private: double wagon_length;
 	
 
 };

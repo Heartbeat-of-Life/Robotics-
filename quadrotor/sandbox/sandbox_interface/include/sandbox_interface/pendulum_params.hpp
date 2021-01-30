@@ -5,6 +5,9 @@ struct PendulumParams
 {                                                                                                                
 	public:
 	PendulumParams()=default;
-        T m; //wagon mass                                                                                  
+        T mw; //wagon mass                                                                                  
+        T mh; //pendulum head mass                                                                                 
+	T xmin;
+	T xmax;
 };
 #endif
