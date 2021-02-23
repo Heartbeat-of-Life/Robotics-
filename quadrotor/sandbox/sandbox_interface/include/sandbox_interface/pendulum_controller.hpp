@@ -154,17 +154,17 @@ class ProblemDescriptionMPC : public grampc::ProblemDescription
 	}
  void Vfct(typeRNum *out, ctypeRNum thor, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes)override 
  {
-//	 out[0]=   10*POW2(x[0]-xdes[0]);
-//	 out[0]+=  10*POW2(x[1]-xdes[1]);
-//	 out[0]+=  10*POW2(x[2]-xdes[2]);
-//	 out[0]+=  10*POW2(x[3]-xdes[3]);
+	 out[0]=   w1_term*POW2(x[0]-xdes[0]);
+	 out[0]+=  w2_term*POW2(x[1]-xdes[1]);
+	 out[0]+=  w3_term*POW2(x[2]-xdes[2]);
+	 out[0]+=  w4_term*POW2(x[3]-xdes[3]);
  }
  virtual void dVdx(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes) 
  {
-//	 out[0]=2*(x[0]-xdes[0])*10;
-//	 out[1]=2*(x[1]-xdes[1])*10;
-//	 out[2]=2*(x[2]-xdes[2])*10;
-//	 out[3]=2*(x[3]-xdes[3])*10;
+	 out[0]=2*(x[0]-xdes[0])*w1_term;
+	 out[1]=2*(x[1]-xdes[1])*w2_term;
+	 out[2]=2*(x[2]-xdes[2])*w3_term;
+	 out[3]=2*(x[3]-xdes[3])*w4_term;
  }
 
  void dVdT(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes)
@@ -222,31 +222,24 @@ class ProblemDescriptionMPC : public grampc::ProblemDescription
 //   }
      void lfct(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes) 
     {
-		out[0]=u[0]*u[0];
-		
-
-//		out[0]+=POW2(x[0]-xdes[0]);
-//		std::cout <<"xdes[0]="
-//		out[0]+=POW2(x[1]-xdes[1]);
-//		out[0]+=1*POW2(x[2]-xdes[2]);
-//		out[0]+=POW2(x[3]-xdes[3]);
-//		out[0]+=1;
-//		std::cout<<"INTEGRALCOSTS="<<out[0]<<std::endl;
-
+		out[0]= wu_integr*POW2(u[0]);
+		out[0]+=w1_integr*POW2(x[0]-xdes[0]);
+		out[0]+=w2_integr*POW2(x[1]-xdes[1]);
+		out[0]+=w3_integr*POW2(x[2]-xdes[2]);
+		out[0]+=w4_integr*POW2(x[3]-xdes[3]);
     }
     /** Gradient dl/dx **/
     void dldx(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes)
    {
-
-//	   out[0]=2*(x[0]-xdes[0]);
-//	   out[1]=2*(x[1]-xdes[1]);
-//	   out[2]=2*(x[2]-xdes[2])*100;
-//	   out[3]=2*(x[3]-xdes[3]);
+	   out[0]=2*w1_integr*(x[0]-xdes[0]);
+	   out[1]=2*w2_integr*(x[1]-xdes[1]);
+	   out[2]=2*w3_integr*(x[2]-xdes[2]);
+	   out[3]=2*w4_integr*(x[3]-xdes[3]);
    }
     /** Gradient dl/du **/
      void dldu(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes)
     {
-	   out[0]=2*u[0]; 
+	   out[0]=2*wu_integr*u[0]; 
     }
 
 
@@ -305,6 +298,60 @@ class ProblemDescriptionMPC : public grampc::ProblemDescription
 //		std::cout<<"[out original=["<<out[0]<<","<<out[1]<<","<<out[2]<<","<<out[3]<<"];"<<std::endl;
 	}
 	T a, b, c, d, e, f;
+
+
+
+
+	 double w1_integr;
+	 double w2_integr;
+	 double w3_integr;
+	 double w4_integr;
+	 double wu_integr;
+
+	 double w1_term;
+	 double w2_term;
+	 double w3_term;
+	 double w4_term;
+
+	 double x1f;
+	 double x2f;
+	 double x3f;
+	 double x4f;
+
+
+	void setTerminalCostWeights(const double w1,
+		       	   	    const double w2, 
+				    const double w3,
+				    const double w4)
+	{
+		w1_term=w1;
+		w2_term=w2;
+		w3_term=w3;
+		w4_term=w4;
+	}
+	void setIntegralCostWeights(const double w1,
+		       		const double w2, 
+				const double w3,
+				const double w4,
+				const double wu)
+	{
+		w1_integr=w1;
+		w2_integr=w2;
+		w3_integr=w3;
+		w4_integr=w4;
+		wu_integr=wu;
+	}
+	void setTerminalConstraints(const double x1f_,
+				    const double x2f_,
+				    const double x3f_,
+				    const double x4f_)
+	{
+		x1f=x1f_;
+		x2f=x2f_;
+		x3f=x3f_;
+		x4f=x4f_;
+	}
+
 };
 
 template<typename T>
@@ -314,7 +361,10 @@ class PendulumControllerMPC : public PendulumControllerBase<T>
       public:
       PendulumControllerMPC(const PendulumParams<T> pendulum_params):PendulumControllerBase<T>(pendulum_params)
       {
-	solver = std::make_unique<grampc::Grampc>(new ProblemDescriptionMPC<T>(pendulum_params));
+	      prob_form= std::make_shared<ProblemDescriptionMPC<T>>(pendulum_params);
+ 	      solver = std::make_unique<grampc::Grampc>(prob_form.get());
+
+
       }
 
 
@@ -328,7 +378,7 @@ class PendulumControllerMPC : public PendulumControllerBase<T>
 
 	std::vector<Control<T>> compute_controls() const override
 	{
-	FILE *file_x, *file_u, *file_p, *file_T, *file_J, *file_Ncfct, *file_Npen, *file_iter, *file_status, *file_t;
+//	FILE *file_x, *file_u, *file_p, *file_T, *file_J, *file_Ncfct, *file_Npen, *file_iter, *file_status, *file_t;
 
 //           openFile(&file_x, "res/xvec.txt");
 //           openFile(&file_u, "res/uvec.txt");
@@ -342,14 +392,15 @@ class PendulumControllerMPC : public PendulumControllerBase<T>
 //           openFile(&file_t, "res/tvec.txt");
 
 
+//		solver.setTerminalCostWeights(0,0,0,0);
+//		solver.setIntegralCostWeights(0,0,0,0,1);
 
-		typeRNum pCost[3] = {1,0.1,1};
-		typeUSERPARAM *userparam = pCost;
-		solver->init(userparam);
 		const int N = 1001;
 		typeRNum Thor = 5;
-//		typeRNum xdes[2] = {1.7,0};
-//		typeRNum x0[2] = {0,0};
+		// Order is x1 x2 x3 x4 u
+		prob_form->setTerminalCostWeights(0,0,0,0);
+		prob_form->setIntegralCostWeights(0,0,0,0,1);
+		prob_form->setTerminalConstraints(0,0,0,0);
 
 		ctypeRNum constraintstols[4] = {1e-3,1e-3,1e-3,1e-3};
 //		a;
@@ -390,7 +441,7 @@ class PendulumControllerMPC : public PendulumControllerBase<T>
 		ctypeRNum umin[1] = {-100};
 		solver->setparam_real_vector("umax",umax);
 		solver->setparam_real_vector("umin",umin);
-		solver->run();
+		solver->run(); 
 		const auto wsp = solver->getWorkspace();
 		std::vector<Control<T>> res(N);
 		std::cout<<"NEW RESULT="<<std::endl;
@@ -421,7 +472,10 @@ class PendulumControllerMPC : public PendulumControllerBase<T>
 		return res;
 
 	}
-	std::unique_ptr<grampc::Grampc> solver;
+	std::unique_ptr<grampc::Grampc> solver;//
+	std::shared_ptr<ProblemDescriptionMPC<T>> prob_form;
+	                                       //
+                                               //
 };
 
 
