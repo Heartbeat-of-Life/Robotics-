@@ -22,12 +22,12 @@ def generate_launch_description():
         ld.add_action(sandbox_interface_launch)
         ld.add_action(gazebo_launch)
         #ld.add_action(declare_use_world_file_arg)
-        n=Node(
-                package='test_pg',
-                namespace='',
-                executable='test_pg',
-                name='test_node',
-                output='screen')
-        ld.add_action(n)
+#        n=Node(
+#                package='test_pg',
+#                namespace='',
+#                executable='test_pg',
+#                name='test_node',
+#                output='screen')
+#        ld.add_action(n)
 
         return ld

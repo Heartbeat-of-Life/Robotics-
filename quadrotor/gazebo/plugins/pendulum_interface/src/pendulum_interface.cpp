@@ -12,9 +12,12 @@
 #include <gazebo/msgs/msgs.hh>
 #include <ignition/math.hh>
 #include<std_msgs/msg/float32.hpp>
+#include<messages/msg/control.hpp>
+#include<messages/msg/predictive_control.hpp>
 #include<messages/srv/pendulum_sensor_info.hpp>
 #include<thread>
 
+using cmtype = messages::msg::PredictiveControl;
 using namespace std::chrono_literals;
 
 namespace gazebo
@@ -22,10 +25,9 @@ namespace gazebo
   class PendulumSensor : public ModelPlugin
   {
 	public: PendulumSensor()  {
-		
-		
-		auto service_callback = [this](const std::shared_ptr<messages::srv::PendulumSensorInfo::Request> req,
-						     std::shared_ptr<messages::srv::PendulumSensorInfo::Response> res)->auto
+		using psinfo = messages::srv::PendulumSensorInfo;
+		auto service_callback = [this](const std::shared_ptr<psinfo::Request> req,
+						     std::shared_ptr<psinfo::Response> res)->auto
 		{ 
 			res->t = clock.now().seconds();   
 			res->x =this->wagon->RelativePose().Pos().Y();
@@ -33,18 +35,44 @@ namespace gazebo
 			res->phi = this->model->GetLink("stick")->WorldPose().Rot().Roll();
 			res->dphi= this->pendulum_joint->GetVelocity(0);
 			return;
-
 		};
 		this->node_ptr = rclcpp::Node::make_shared("PendulumSensor");
-		this->service=node_ptr->create_service<messages::srv::PendulumSensorInfo>("pendulum_sensor",service_callback);
-		auto cb = [this](const std_msgs::msg::Float64::SharedPtr msg){
-			current_force = msg.get()->data;
+		this->service=node_ptr->create_service<psinfo>("pendulum_sensor",service_callback);
+		// Control message type
+		auto cb = [this](const cmtype::SharedPtr msg){
+//			std::cout <<"subscribnh message of size="<<msg->uarray.size()<<std::endl;
+			controls = msg->uarray;
+//			std::cout<<"new controls arrived"<<std::endl;
 		};
-		this->sub = this->node_ptr->create_subscription<std_msgs::msg::Float64>("control_force",10,cb);
+		this->sub = this->node_ptr->create_subscription<cmtype>("control_force",10,cb);
 	}
 	public: void onUpdate()
 	{
-//		this->wagon_rail_joint->SetForce(0,current_force);
+//		static double tstart= this->clock.now().seconds();
+		 double force=-1;
+		if(controls.empty())
+		{
+			return;
+		}
+		else if(controls.size()==1)
+		{
+			force=controls.front().u;
+		}
+		else
+		{
+			const double tnow = this->clock.now().seconds();   
+			for(size_t k = 0; k < controls.size(); ++k)
+			{
+				if(controls[k].t >=tnow)
+				{
+					force=controls[k].u;
+//					std::cout<<"assigned force at idx="<<k<<" timediff was="<< (controls[k].t-tnow) <<std::endl;
+					break;
+				}
+			}
+		}
+//		this->wagon_rail_joint->SetForce(0,force);
+//		std::cout <<"setting force ="<<force<<std::endl;
 	}
 
 	public: virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
@@ -83,7 +111,7 @@ namespace gazebo
 		rclcpp::spin(node_ptr);
 		rclcpp::shutdown();
 	}
-	private: rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr sub;
+	private: rclcpp::Subscription<messages::msg::PredictiveControl>::SharedPtr sub;
 	private: physics::ModelPtr model;
 	private: physics::LinkPtr wagon;
 	private: physics::LinkPtr wagon_stick_joint;
@@ -95,7 +123,8 @@ namespace gazebo
 	private: rclcpp::Service<messages::srv::PendulumSensorInfo>::SharedPtr service;
 	private: rclcpp::Clock clock;
 	private: event::ConnectionPtr update_connection;
-	private: double current_force;
+	private: std::vector<messages::msg::Control> controls;
+
 //	private: double mass;
 //	private: double wagon_length;
 	

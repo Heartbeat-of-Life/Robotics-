@@ -181,7 +181,7 @@
       </link>
       <link name='joint_wagon_stick'>
         <inertial>
-          <mass>0.01</mass>
+          <mass>1</mass>
           <inertia>
             <ixx>0.145833</ixx>
             <ixy>0</ixy>
@@ -281,7 +281,7 @@
       </link>
       <link name='stick'>
         <inertial>
-          <mass>1</mass>
+          <mass>0.01</mass>
           <inertia>
             <ixx>0.166667</ixx>
             <ixy>0</ixy>
@@ -951,7 +951,7 @@
           </surface>
         </collision>
       </link>
-      <joint name='joint_wagon_stick_JOINT_1' type='fixed'>
+      <joint name='joint_wagon_to_stick' type='fixed'>
         <parent>joint_wagon_stick</parent>
         <child>stick</child>
         <pose>0 0 0 0 -0 0</pose>
@@ -1075,8 +1075,8 @@
         <axis>
           <xyz>0 1 0</xyz>
           <limit>
-            <lower>-1</lower>
-            <upper>1</upper>
+            <lower>-5</lower>
+            <upper>5</upper>
             <effort>-1</effort>
             <velocity>-1</velocity>
           </limit>
@@ -1135,13 +1135,13 @@
       <static>0</static>
       <allow_auto_disable>1</allow_auto_disable>
       <plugin name='pendulum_interface' filename='libpendulum_interface.so'/>
-      <pose>-0.613257 -3.34976 0 0 -0 0</pose>
+      <pose>-0.631696 -2.95611 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>4 10000000</sim_time>
-      <real_time>4 53130610</real_time>
-      <wall_time>1611956320 373232515</wall_time>
-      <iterations>4010</iterations>
+      <sim_time>3 684000000</sim_time>
+      <real_time>3 727058595</real_time>
+      <wall_time>1612208775 978683940</wall_time>
+      <iterations>3684</iterations>
       <model name='ground_plane'>
         <pose>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -1153,58 +1153,58 @@
         </link>
       </model>
       <model name='pendulum'>
-        <pose>-0.613257 -3.34976 0 0 -0 0</pose>
+        <pose>-0.631696 -2.95611 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='joint_wagon_stick'>
-          <pose>-0.513257 -2.34976 1.65 3.14158 1.57079 3.14158</pose>
+          <pose>-0.531696 -1.95611 1.65 3.14158 1.57079 3.14158</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='pendulum_head'>
-          <pose>-0.513257 -2.34976 2.65 0 -0 0</pose>
+          <pose>-0.531696 -1.95611 2.65 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='pendulum_wagon'>
-          <pose>-0.613257 -2.34976 1.65 0 -0 0</pose>
+          <pose>-0.631696 -1.95611 1.65 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='stick'>
-          <pose>-0.513257 -2.34976 2.15 0 -0 0</pose>
+          <pose>-0.531696 -1.95611 2.15 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='table_leg_foot_left'>
-          <pose>-0.613257 -3.34976 0.05 0 -0 0</pose>
+          <pose>-0.631696 -2.95611 0.05 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='table_leg_foot_left_clone'>
-          <pose>-0.613257 -0.34976 0.05 0 -0 0</pose>
+          <pose>-0.631696 0.04389 0.05 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='table_leg_left'>
-          <pose>-0.613257 -3.34976 1 0 -0 0</pose>
+          <pose>-0.631696 -2.95611 1 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='table_leg_right'>
-          <pose>-0.613257 -0.34976 1 0 -0 0</pose>
+          <pose>-0.631696 0.04389 1 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='table_plate'>
-          <pose>-0.613257 -1.84976 1.5 0 -0 0</pose>
+          <pose>-0.631696 -1.45611 1.5 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -1216,7 +1216,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>6.47921 -4.13603 2.87726 0 0.315643 2.67219</pose>
+        <pose>5 -5 2 0 0.275643 2.35619</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>

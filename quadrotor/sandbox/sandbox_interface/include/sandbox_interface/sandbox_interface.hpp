@@ -12,6 +12,7 @@
 #include"std_msgs/msg/float64.hpp"
 
 using namespace std::chrono_literals;
+using cmtype = messages::msg::PredictiveControl;
 namespace sbx
 {
 	class PendulumController: public rclcpp::Node
@@ -23,7 +24,7 @@ namespace sbx
 		rclcpp::TimerBase::SharedPtr timer;
 		rclcpp::Client<messages::srv::PendulumSensorInfo>::SharedPtr client;
 		rclcpp::Clock clock;
-		rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr publisher;
+		rclcpp::Publisher<cmtype>::SharedPtr publisher;
 		std::unique_ptr<PendulumControllerBase<double>> ptr_controller;
 	};
 }

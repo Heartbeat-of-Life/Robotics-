@@ -27,11 +27,16 @@ find_package(messages REQUIRED)
 
 # sandbox interface executable
 add_executable(${PROJECT_NAME}  src/sandbox_interface.cpp )
+
 ament_target_dependencies(${PROJECT_NAME} rclcpp messages std_msgs )
+
 target_include_directories(${PROJECT_NAME}
 			   PUBLIC
 			   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-			   $<INSTALL_INTERFACE:include>)
+			   $<INSTALL_INTERFACE:include>
+			   ${CMAKE_CURRENT_SOURCE_DIR}/../../external/GRAMPC_v2.2/cpp/include
+			   ${CMAKE_CURRENT_SOURCE_DIR}/../../external/GRAMPC_v2.2/include
+			   )
 
 
 
@@ -46,11 +51,14 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+target_link_directories(${PROJECT_NAME}
+			PUBLIC
+      			${CMAKE_CURRENT_SOURCE_DIR}/../../external/GRAMPC_v2.2/cpp/libs
+		        ${CMAKE_CURRENT_SOURCE_DIR}/../../external/GRAMPC_v2.2/libs)
+
+target_link_libraries(${PROJECT_NAME}  libgrampc.a)
 ament_package()
 
-#target_link_libraries(${PROJECT_NAME}
-#		      PRIVATE
-#		      ${PENDULUM_CONTROLLER})
 
 install(DIRECTORY 
 	launch

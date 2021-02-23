@@ -19,7 +19,9 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME} 
-				"srv/PendulumSensorInfo.srv")
+				"srv/PendulumSensorInfo.srv"
+				"msg/Control.msg"
+				"msg/PredictiveControl.msg")
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
